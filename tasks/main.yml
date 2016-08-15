@@ -2,7 +2,7 @@
   command: dpkg-divert --quiet --local --divert /etc/ulogd.conf.dpkg-divert --rename /etc/ulogd.conf
   args:
     creates: '/etc/ulogd.conf.dpkg-divert'
-  when: ulogd2__enabled|bool
+  when: ulogd__enabled|bool
 
 - name: Generate main configuration file
   template:
@@ -10,11 +10,11 @@
     dest: '/etc/ulogd.conf'
     owner: 'root'
     mode: '0600'
-  when: ulogd2__enabled|bool
+  when: ulogd__enabled|bool
 
 - name: Revert to the default configuration file
   shell: rm -f /etc/ulogd.conf ; dpkg-divert --quiet --local --rename --remove /etc/ulogd.conf
   args:
     removes: '/etc/ulogd.conf.dpkg-divert'
     warn: False
-  when: not ulogd2__enabled|bool
+  when: not ulogd__enabled|bool
