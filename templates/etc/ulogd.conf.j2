@@ -1,0 +1,28 @@
+# {{ ansible_managed }}
+
+[global]
+#@####################################################################
+# GLOBAL OPTIONS
+######################################################################
+
+# logfile for status messages
+logfile="{{ ulogd__logile_status_messages }}"
+#
+# loglevel: debug(1), info(3), notice(5), error(7) or fatal(8)
+# if ommited - default 5
+loglevel={{ ulogd__loglevel }}
+
+######################################################################
+# PLUGIN OPTIONS
+######################################################################
+#
+# We have to configure and load all the plugins we want to use
+#
+# General rules:
+# 1. load the plugins _first_ from the global section
+# 2. options for each plugin in a seperate section below
+
+# List of plugins enabled by the ``debops.ulogd`` role and other roles
+{% for plugin in ulogd__base_plugins + ulogd__plugins %}
+plugin="/usr/lib/i386-linux-gnu/ulogd/ulogd_{{ plugin }}.so"
+{% endfor %}
