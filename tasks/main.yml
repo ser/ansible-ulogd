@@ -1,3 +1,13 @@
+- name: Install required packages
+  apt:
+    name: '{{ item  }}'
+    state: 'present'
+    install_recommends: False
+  with_flattened:
+    - '{{ ulogd__base_packages }}'
+    - '{{ ulogd__packages }}'
+  when: ulogd__enabled|bool
+
 - name: Divert the original config file
   command: dpkg-divert --quiet --local --divert /etc/ulogd.conf.dpkg-divert --rename /etc/ulogd.conf
   args:
