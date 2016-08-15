@@ -1,0 +1,23 @@
+---
+# Default variables
+# =================
+
+# .. contents:: Sections
+#    :local:
+#
+# ------------------------
+#   Global configuration
+# ------------------------
+
+# .. envvar:: ulogd__enabled
+#
+# Enable or disable management of ``ulogd`` configuration files.
+ulogd__enabled: True
+
+# .. envvar:: ulogd__base_packages
+# List of base APT packages to install.
+ulogd__base_packages: ['ulogd2']
+
+# .. envvar:: ulogd__packages
+# List of additional APT packages to install with ``ulogd``
+ulogd__packages: []
