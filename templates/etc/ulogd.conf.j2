@@ -1,12 +1,12 @@
 # {{ ansible_managed }}
 
 [global]
-#@####################################################################
+######################################################################
 # GLOBAL OPTIONS
 ######################################################################
 
 # logfile for status messages
-logfile="{{ ulogd__logile_status_messages }}"
+logfile="{{ ulogd__logfile_status_messages }}"
 #
 # loglevel: debug(1), info(3), notice(5), error(7) or fatal(8)
 # if ommited - default 5
@@ -25,4 +25,46 @@ loglevel={{ ulogd__loglevel }}
 # List of plugins enabled by the ``debops.ulogd`` role and other roles
 {% for plugin in ulogd__base_plugins + ulogd__plugins %}
 plugin="/usr/lib/i386-linux-gnu/ulogd/ulogd_{{ plugin }}.so"
+{% endfor %}
+
+# list of plugins with full path definitions
+{% for plugin in ulogd__fullpath_plugins %}
+plugin="{{ plugin }}"
+{% endfor %}
+
+######################################################################
+# STACKS
+######################################################################
+#
+# Here we have all defined stacks, more information at:
+# http://www2.kangran.su/~nnz/pub/nf-doc/ulogd2/
+
+{% for stack in ulogd__stacks %}
+stack={%set tmp = 1%}{% for stackentry in stack %}{% for key, value in stackentry.iteritems() %}{% if key is not equalto 'OPTIONS' %}{% if tmp > 1 %}:{% endif %}{{ key }}:{{ value }}{% endif %}{% endfor %}{% set tmp = tmp+1 %}{% endfor %}
+
+{% endfor %}
+
+######################################################################
+# PLUGIN INSTANCES 
+######################################################################
+#
+# Configuration of plugin instances, if it is required by a plugin.
+{% for stack in ulogd__stacks %}
+{% for stackentry in stack %}
+{% set entrysorted = stackentry|dictsort(True)|reverse %}
+{% for entry in entrysorted %}
+{% if entry[0] is not equalto 'OPTIONS' %}
+
+[{{ entry[0] }}]
+{% else %}
+{% for key, value in entry[1].iteritems() %}
+{%if value is number %}
+{{ key }}={{ value }}
+{% else %}
+{{ key }}="{{ value }}"
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endfor %}
 {% endfor %}

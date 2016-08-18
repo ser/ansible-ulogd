@@ -19,18 +19,79 @@ ulogd__enabled: True
 ulogd__base_packages: ['ulogd2']
 
 # .. envvar:: ulogd__packages
-# List of additional APT packages to install with ``ulogd``
+# List of additional APT packages to install with ``ulogd``.
 ulogd__packages: []
 
 # .. envvar:: ulogd__logile_status_messages
-# Logfile for status messages
-ulogd__logile_status_messages: 'syslog'
+# The main logfile, where ulogd reports any errors, warnings and other
+# unexpected conditions. Apart from a regular filename, the following special
+# values can be used; ``syslog'' to log via the unix syslog(3) mechanism.
+# ``stdout'' to log to stdout.
+ulogd__logfile_status_messages: 'syslog'
 
 # .. envvar:: ulogd__loglevel
-# Loglevel: debug(1), info(3), notice(5), error(7) or fatal(8)
+# This specifies, how verbose the logging to logfile is. Currently defined
+# loglevels are: 1=debug information, 3=informational messages, 5=noticable
+# exceptional conditions, 7=error conditions, 8=fatal errors, program abort.
 ulogd__loglevel: '3'
 
 # ------------------------------
 #   Logging configuration
 # ------------------------------
 
+# Plugins. In the config file, this option is followed by a filename of
+# a ulogd plugin, which ulogd should load upon initialization. This
+# option may appear more than once.
+#
+# In DebOps plugins are split into three lists. First two use short naming,
+# please consult listing of ``/usr/lib/x86_64-linux-gnu/ulogd/`` directory
+# or its equivalent in your host architecture to understand the methodology.
+
+# .. envvar:: ulogd__base_plugins
+# List of plugins turned on by default in the DebOps role. These are really essential
+# ones and it's hard to build a useful stack without them.
+ulogd__base_plugins: [ 'inppkt_NFLOG', 'raw2packet_BASE', 'filter_IFINDEX', 'filter_IP2STR', 'filter_PRINTPKT', 'output_LOGEMU' ]
+
+# .. envvar:: ulogd__plugins
+# List of additional plugins you or dependent role would like to use.
+ulogd__plugins: []
+
+# .. envvar:: ulogd__fullpath_plugins
+# List of additional plugins with full path definitions. You may need it of you deploy external plugins.
+ulogd__fullpath_plugins: []
+
+# .. envvar:: ulogd__stacks
+# Stack. In the config file this option is followed by a list of plugin
+# instances which will start with an input plugin, contains optional filtering
+# plugin and finish by an output plugin. This option may appear more than once.
+#
+# In DebOps the stack is defined with YAML syntax. After defining a stack, you
+# are able to extend it with options which configure that stack. 
+#
+# ATTENTION: by limitation of this role, names of plugin instances can not start with a capital letter or a number!
+#
+# It's an example use case for defining and configuring two stacks:
+#
+# ulogd__stack_shorewall:
+#   - log1: 'BASE'
+#     options:
+#       group: 0
+#       netlink_qtimeout: 100
+#   - base1: 'BASE'
+#   - ifi1: 'IFINDEX'
+#   - emu1: 'LOGEMU'
+#     options:
+#       file: '/var/log/ulogg/syslogemu.log'
+#       sync: 1
+#
+# ulogd__stack_ferm:
+#   - log2: 'BASE'
+#   - ifi2: 'IFINDEX'
+#
+# ulogd__stacks:
+#   - '{{ ulogd__stack_shorewall }}'
+#   - '{{ ulogd__stack_ferm }}'
+#
+# By default stack list is empty, as it is up to the dependent application to define desired stack of logging.
+#
+ulogd__stacks: []
