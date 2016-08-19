@@ -21,6 +21,7 @@
     owner: 'root'
     mode: '0600'
   when: ulogd__enabled|bool
+  notify: [ 'Restart ulogd' ]
 
 - name: Revert to the default configuration file
   shell: rm -f /etc/ulogd.conf ; dpkg-divert --quiet --local --rename --remove /etc/ulogd.conf

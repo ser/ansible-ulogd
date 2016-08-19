@@ -23,12 +23,19 @@ loglevel={{ ulogd__loglevel }}
 # 2. options for each plugin in a seperate section below
 
 # List of plugins enabled by the ``debops.ulogd`` role and other roles
-{% for plugin in ulogd__base_plugins + ulogd__plugins %}
+{% for plugin in ulogd__base_plugins
+    + ulogd__plugins
+    + ulogd__host_plugins
+    + ulogd__group_plugins
+    + ulogd__dependent_plugins %}
 plugin="/usr/lib/i386-linux-gnu/ulogd/ulogd_{{ plugin }}.so"
 {% endfor %}
 
 # list of plugins with full path definitions
-{% for plugin in ulogd__fullpath_plugins %}
+{% for plugin in ulogd__fullpath_plugins 
+    + ulogd__host_fullpath_plugins
+    + ulogd__group_fullpath_plugins
+    + ulogd__dependent_fullpath_plugins %}
 plugin="{{ plugin }}"
 {% endfor %}
 
@@ -39,7 +46,10 @@ plugin="{{ plugin }}"
 # Here we have all defined stacks, more information at:
 # http://www2.kangran.su/~nnz/pub/nf-doc/ulogd2/
 
-{% for stack in ulogd__stacks %}
+{% for stack in ulogd__stacks
+    + ulogd__host_stacks
+    + ulogd__group_stacks
+    + ulogd__dependent_stacks %}
 stack={%set tmp = 1%}{% for stackentry in stack %}{% for key, value in
     stackentry.iteritems() %}{% if key is not equalto 'OPTIONS' %}{% if
     tmp > 1 %}:{% endif %}{{ key }}:{{ value }}{% endif %}{% endfor 
@@ -52,7 +62,10 @@ stack={%set tmp = 1%}{% for stackentry in stack %}{% for key, value in
 ######################################################################
 #
 # Configuration of plugin instances, if it is required by a plugin.
-{% for stack in ulogd__stacks %}
+{% for stack in ulogd__stacks
+    + ulogd__host_stacks
+    + ulogd__group_stacks
+    + ulogd__dependent_stacks %}
 {% for stackentry in stack %}
 {% set entrysorted = stackentry|dictsort(True)|reverse %}
 {% for entry in entrysorted %}

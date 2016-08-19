@@ -55,11 +55,9 @@ page.
 Usage as a role dependency
 --------------------------
 
-Other roles can use ``debops.ulogd`` role in their own playbooks to
-idempotently use ``ulogd`` logging mechanism, define stacks and plugins,
-using ``nment__dependent_variables`` list) will be
-stored in Ansible local facts on the affected hosts so that they will be
-preserved on subsequent Ansble runs. They will not be removed automatically.
+Other roles can use ``debops.ulogd`` role in their own playbooks
+to idempotently use ``ulogd`` logging mechanism, define stacks
+and their plugins.
 
 The variables defined by roles override variables defined through Ansible
 inventory.

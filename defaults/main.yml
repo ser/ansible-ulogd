@@ -43,9 +43,10 @@ ulogd__loglevel: '3'
 # a ulogd plugin, which ulogd should load upon initialization. This
 # option may appear more than once.
 #
-# In DebOps plugins are split into three lists. First two use short naming,
+# In DebOps plugins are split into several lists. First group use short naming,
 # please consult listing of ``/usr/lib/x86_64-linux-gnu/ulogd/`` directory
 # or its equivalent in your host architecture to understand the methodology.
+# Fullpath lists prive full path to each plugin.
 
 # .. envvar:: ulogd__base_plugins
 # List of plugins turned on by default in the DebOps role. These are really essential
@@ -53,12 +54,36 @@ ulogd__loglevel: '3'
 ulogd__base_plugins: [ 'inppkt_NFLOG', 'raw2packet_BASE', 'filter_IFINDEX', 'filter_IP2STR', 'filter_PRINTPKT', 'output_LOGEMU' ]
 
 # .. envvar:: ulogd__plugins
-# List of additional plugins you or dependent role would like to use.
+# List of additional plugins you or dependent role would like to use, defined for all hosts in Ansible inventory.
 ulogd__plugins: []
+
+# .. envvar:: ulogd__group_plugins
+# List of additional plugins which could be defined for a group of hosts in Ansible inventory. 
+ulogd__group_plugins: []
+
+# .. envvar:: ulogd__host_plugins
+# List of additional plugins which could be defined for a specific host in Ansible inventory. 
+ulogd__host_plugins: []
+
+# .. envvar:: ulogd__dependent_plugins
+# List of additional plugins which could be defined by other Ansible roles as a dependency.
+ulogd__dependent_plugins: []
 
 # .. envvar:: ulogd__fullpath_plugins
 # List of additional plugins with full path definitions. You may need it of you deploy external plugins.
 ulogd__fullpath_plugins: []
+
+# .. envvar:: ulogd__fullpath_group_plugins
+# List of additional plugins which could be defined for a group of hosts in Ansible inventory. 
+ulogd__fullpath_group_plugins: []
+
+# .. envvar:: ulogd__fullpath_host_plugins
+# List of additional plugins which could be defined for a specific host in Ansible inventory. 
+ulogd__fullpath_plugins: []
+
+# .. envvar:: ulogd__fullpath_dependent_plugins
+# List of additional plugins which could be defined by other Ansible roles as a dependency.
+ulogd__fullpath_dependent_plugins: []
 
 # .. envvar:: ulogd__stacks
 # Stack. In the config file this option is followed by a list of plugin
@@ -95,3 +120,15 @@ ulogd__fullpath_plugins: []
 # By default stack list is empty, as it is up to the dependent application to define desired stack of logging.
 #
 ulogd__stacks: []
+
+# .. envvar:: ulogd__host_stacks
+# List of stacks defined for specific hosts in Ansible inventory.
+ulogd__host_stacks: []
+
+# .. envvar:: ulogd__group_stacks
+# List of stacks defined for specific groups in Ansible inventory.
+ulogd__group_stacks: []
+
+# .. envvar:: ulogd__dependent_stacks
+# List of stacks defined by other Ansible roles as a dependency.
+ulogd__dependent_stacks: []

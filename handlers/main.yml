@@ -1,0 +1,6 @@
+---
+
+- name: Restart ulogd
+  service:
+    name: 'ulogd'
+    state: 'restarted'
