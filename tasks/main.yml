@@ -19,7 +19,8 @@
     src: 'etc/ulogd.conf.j2'
     dest: '/etc/ulogd.conf'
     owner: 'root'
-    mode: '0600'
+    group: 'ulog'
+    mode: '0640'
   when: ulogd__enabled|bool
   notify: [ 'Restart ulogd' ]
 
