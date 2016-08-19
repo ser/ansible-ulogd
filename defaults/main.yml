@@ -79,7 +79,7 @@ ulogd__fullpath_group_plugins: []
 
 # .. envvar:: ulogd__fullpath_host_plugins
 # List of additional plugins which could be defined for a specific host in Ansible inventory. 
-ulogd__fullpath_plugins: []
+ulogd__fullpath_host_plugins: []
 
 # .. envvar:: ulogd__fullpath_dependent_plugins
 # List of additional plugins which could be defined by other Ansible roles as a dependency.
