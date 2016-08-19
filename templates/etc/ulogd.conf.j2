@@ -40,7 +40,10 @@ plugin="{{ plugin }}"
 # http://www2.kangran.su/~nnz/pub/nf-doc/ulogd2/
 
 {% for stack in ulogd__stacks %}
-stack={%set tmp = 1%}{% for stackentry in stack %}{% for key, value in stackentry.iteritems() %}{% if key is not equalto 'OPTIONS' %}{% if tmp > 1 %}:{% endif %}{{ key }}:{{ value }}{% endif %}{% endfor %}{% set tmp = tmp+1 %}{% endfor %}
+stack={%set tmp = 1%}{% for stackentry in stack %}{% for key, value in
+    stackentry.iteritems() %}{% if key is not equalto 'OPTIONS' %}{% if
+    tmp > 1 %}:{% endif %}{{ key }}:{{ value }}{% endif %}{% endfor 
+    %}{% set tmp = tmp+1 %}{% endfor %}
 
 {% endfor %}
 
