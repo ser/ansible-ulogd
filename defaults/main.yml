@@ -46,7 +46,7 @@ ulogd__loglevel: '3'
 # In DebOps plugins are split into several lists. First group use short naming,
 # please consult listing of ``/usr/lib/x86_64-linux-gnu/ulogd/`` directory
 # or its equivalent in your host architecture to understand the methodology.
-# Fullpath lists prive full path to each plugin.
+# Fullpath lists provide full path to each plugin.
 
 # .. envvar:: ulogd__base_plugins
 # List of plugins turned on by default in the DebOps role. These are really essential
