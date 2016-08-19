@@ -28,7 +28,7 @@ loglevel={{ ulogd__loglevel }}
     + ulogd__host_plugins
     + ulogd__group_plugins
     + ulogd__dependent_plugins %}
-plugin="/usr/lib/i386-linux-gnu/ulogd/ulogd_{{ plugin }}.so"
+plugin="{{ ulogd__plugins_dir }}/ulogd_{{ plugin }}.so"
 {% endfor %}
 
 # list of plugins with full path definitions
@@ -47,12 +47,13 @@ plugin="{{ plugin }}"
 # http://www2.kangran.su/~nnz/pub/nf-doc/ulogd2/
 
 {% for stack in ulogd__stacks
+    + ulogd__default_stacks
     + ulogd__host_stacks
     + ulogd__group_stacks
     + ulogd__dependent_stacks %}
 stack={%set tmp = 1%}{% for stackentry in stack %}{% for key, value in
     stackentry.iteritems() %}{% if key is not equalto 'OPTIONS' %}{% if
-    tmp > 1 %}:{% endif %}{{ key }}:{{ value }}{% endif %}{% endfor 
+    tmp > 1 %},{% endif %}{{ key }}:{{ value }}{% endif %}{% endfor 
     %}{% set tmp = tmp+1 %}{% endfor %}
 
 {% endfor %}
@@ -63,6 +64,7 @@ stack={%set tmp = 1%}{% for stackentry in stack %}{% for key, value in
 #
 # Configuration of plugin instances, if it is required by a plugin.
 {% for stack in ulogd__stacks
+    + ulogd__default_stacks
     + ulogd__host_stacks
     + ulogd__group_stacks
     + ulogd__dependent_stacks %}
@@ -84,3 +86,5 @@ stack={%set tmp = 1%}{% for stackentry in stack %}{% for key, value in
 {% endfor %}
 {% endfor %}
 {% endfor %}
+
+# {{ ansible_local }}
