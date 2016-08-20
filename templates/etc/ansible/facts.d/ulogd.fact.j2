@@ -1,3 +1,6 @@
 {{ ({
         "enabled": "{{ ulogd__enabled | bool | lower }}"
+        "ulogd__dependent_plugins": "{{ ulogd__dependent_plugins }}"
+        "ulogd__dependent_fullpath_plugins": "{{ ulogd__dependent_plugins }}"
+        "ulogd__dependent_stacks": "{{ ulogd__dependent_stacks }}"
 }) | to_nice_json }}
