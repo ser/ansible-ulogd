@@ -1,3 +1,25 @@
+---
+# vim: foldmarker=[[[,]]]:foldmethod=marker
+
+# Ansible local facts [[[
+
+- name: Make sure that Ansible local facts directory is present
+  file:
+    path: '/etc/ansible/facts.d'
+    state: 'directory'
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+
+- name: Save ulogd local facts
+  template:
+    src: 'etc/ansible/facts.d/ulogd.fact.j2'
+    dest: '/etc/ansible/facts.d/ulogd.fact'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
+                                                              #]]]
+
 - name: Install required packages
   apt:
     name: '{{ item  }}'
