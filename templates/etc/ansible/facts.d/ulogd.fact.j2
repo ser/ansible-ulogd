@@ -1,16 +1,17 @@
+{% set ulogd__tpl_dependent_plugins = [] %}
 {% if ansible_local | d() and ansible_local.ulogd | d() and
        ansible_local.ulogd.dependent_plugins | d()                            %}
-{%   if ulogd__dependent_plugins | d()                                        %}
-{%     set ulogd__tpl_plugins = ulogd__dependent_plugins
-        + ansible_local.ulogd.dependent_plugins | sort | unique               %}
-{%   else                                                                     %}
-{%     set ulogd__tpl_plugins = ansible_local.ulogd.dependent_plugins | sort  %}
-{%   endif                                                                    %}
+{% for element in ansible_local.ulogd.dependent_plugins %}
+{%   set _ = ulogd__tpl_dependent_plugins.append ( element ) %}
+{% endfor                                                                     %}
 {% endif                                                                      %}
+{% for element in ulogd__dependent_plugins or [] %}
+{%   set _ = ulogd__tpl_dependent_plugins.append ( element ) %}
+{% endfor %}
 
-{{ ({
+{
         "enabled": "{{ ulogd__enabled | bool | lower }}",
-        "dependent_plugins": "{{ ulogd__tpl_plugins }}",
-        "dependent_fullpath_plugins": "{{ ulogd__dependent_plugins }}",
-        "dependent_stacks": "{{ ulogd__dependent_stacks }}"
-}) | to_nice_json }}
+        "dependent_plugins": "{{ ulogd__tpl_dependent_plugins | unique | sort | to_nice_json }}",
+        "dependent_fullpath_plugins": "{{ ulogd__dependent_fullpath_plugins | to_nice_json}}",
+        "dependent_stacks": "{{ ulogd__dependent_stacks | to_nice_json }}"
+}
