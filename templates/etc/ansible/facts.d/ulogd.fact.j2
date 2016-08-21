@@ -1,13 +1,13 @@
-{% set ulogd__tpl_dependent_plugins = [] %}
+{% set ulogd__tpl_dependent_plugins = []                                      %}
 {% if ansible_local | d() and ansible_local.ulogd | d() and
        ansible_local.ulogd.dependent_plugins | d()                            %}
-{% for element in ansible_local.ulogd.dependent_plugins %}
-{%   set _ = ulogd__tpl_dependent_plugins.append ( element ) %}
-{% endfor                                                                     %}
+{%   for element in ansible_local.ulogd.dependent_plugins                     %}
+{%     set _ = ulogd__tpl_dependent_plugins.append ( element )                %}
+{%   endfor                                                                   %}
 {% endif                                                                      %}
-{% for element in ulogd__dependent_plugins or [] %}
-{%   set _ = ulogd__tpl_dependent_plugins.append ( element ) %}
-{% endfor %}
+{% for element in ulogd__dependent_plugins or []                              %}
+{%   set _ = ulogd__tpl_dependent_plugins.append ( element )                  %}
+{% endfor                                                                     %}
 
 {
         "enabled": "{{ ulogd__enabled | bool | lower }}",
