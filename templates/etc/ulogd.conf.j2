@@ -1,5 +1,38 @@
 # {{ ansible_managed }}
 
+{% set ulogd__tpl_plugins = []                                                %}
+{% if ansible_local | d() and ansible_local.ulogd | d() and
+       ansible_local.ulogd.plugins | d()                                      %}
+{%   for element in ansible_local.ulogd.plugins                               %}
+{%     set _ = ulogd__tpl_plugins.append ( element )                          %}
+{%   endfor                                                                   %}
+{% endif                                                                      %}
+{% for element in ulogd__dependent_plugins or []                              %}
+{%   set _ = ulogd__tpl_plugins.append ( element )                            %}
+{% endfor                                                                     %}
+
+{% set ulogd__tpl_fullpath_plugins = []                                       %}
+{% if ansible_local | d() and ansible_local.ulogd | d() and
+       ansible_local.ulogd.fullpath_plugins | d()                             %}
+{%   for element in ansible_local.ulogd.plugins                               %}
+{%     set _ = ulogd__tpl_fullpath_plugins.append ( element )                 %}
+{%   endfor                                                                   %}
+{% endif                                                                      %}
+{% for element in ulogd__dependent_fullpath_plugins or []                     %}
+{%   set _ = ulogd__tpl_fullpath_plugins.append ( element )                   %}
+{% endfor                                                                     %}
+
+{% set ulogd__tpl_stacks = []                                                 %}
+{% if ansible_local | d() and ansible_local.ulogd | d() and
+       ansible_local.ulogd.stacks | d()                                       %}
+{%   for element in ansible_local.ulogd.stacks                                %}
+{%     set _ = ulogd__tpl_stacks.append ( element )                           %}
+{%   endfor                                                                    %}
+{% endif                                                                      %}
+{% for element in ulogd__dependent_stacks or []                               %}
+{%   set _ = ulogd__tpl_stacks.append ( element )                             %}
+{% endfor                                                                     %}
+
 [global]
 ######################################################################
 # GLOBAL OPTIONS
@@ -27,7 +60,7 @@ loglevel={{ ulogd__loglevel }}
     + ulogd__plugins
     + ulogd__host_plugins
     + ulogd__group_plugins
-    + ulogd__dependent_plugins %}
+    + ulogd__tpl_plugins %}
 plugin="{{ ulogd__plugins_dir }}/ulogd_{{ plugin }}.so"
 {% endfor %}
 
@@ -35,7 +68,7 @@ plugin="{{ ulogd__plugins_dir }}/ulogd_{{ plugin }}.so"
 {% for plugin in ulogd__fullpath_plugins 
     + ulogd__host_fullpath_plugins
     + ulogd__group_fullpath_plugins
-    + ulogd__dependent_fullpath_plugins %}
+    + ulogd__tpl_fullpath_plugins %}
 plugin="{{ plugin }}"
 {% endfor %}
 
@@ -50,7 +83,7 @@ plugin="{{ plugin }}"
     + ulogd__default_stacks
     + ulogd__host_stacks
     + ulogd__group_stacks
-    + ulogd__dependent_stacks %}
+    + ulogd__tpl_stacks %}
 stack={%set tmp = 1%}{% for stackentry in stack %}{% for key, value in
     stackentry.iteritems() %}{% if key is not equalto 'OPTIONS' %}{% if
     tmp > 1 %},{% endif %}{{ key }}:{{ value }}{% endif %}{% endfor 
