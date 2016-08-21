@@ -1,6 +1,18 @@
+{% if (ansible_local is defined and ansible_local) and
+      (ansible_local.ulogd is defined and ansible_local.ulogd) and
+      (ansible_local.ulogd.dependent_plugins is defined and
+       (ansible_local.ulogd.dependent_plugins)                                %}
+{%   if ulogd__dependent_plugins is defined and ulogd__dependent_plugins      %}
+{%     set ulogd__tpl_plugins = ulogd__dependent_plugins |
+        combine(ansible_local.ulogd.dependent_plugins)                        %}
+{%   else                                                                     %}
+{%     set ulogd__tpl_plugins = ansible_local.ulogd.dependent_plugins          %}
+{%   endif                                                                    %}
+{% endif                                                                      %}
+
 {{ ({
-        "enabled": "{{ ulogd__enabled | bool | lower }}"
-        "ulogd__dependent_plugins": "{{ ulogd__dependent_plugins }}"
-        "ulogd__dependent_fullpath_plugins": "{{ ulogd__dependent_plugins }}"
-        "ulogd__dependent_stacks": "{{ ulogd__dependent_stacks }}"
+        "enabled": "{{ ulogd__enabled | bool | lower }}",
+        "dependent_plugins": "{{ ulogd__tpl_plugins }}",
+        "dependent_fullpath_plugins": "{{ ulogd__dependent_plugins }}",
+        "dependent_stacks": "{{ ulogd__dependent_stacks }}"
 }) | to_nice_json }}
