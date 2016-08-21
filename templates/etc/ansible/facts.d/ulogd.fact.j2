@@ -1,12 +1,10 @@
-{% if (ansible_local is defined and ansible_local) and
-      (ansible_local.ulogd is defined and ansible_local.ulogd) and
-      (ansible_local.ulogd.dependent_plugins is defined and
-       (ansible_local.ulogd.dependent_plugins)                                %}
-{%   if ulogd__dependent_plugins is defined and ulogd__dependent_plugins      %}
-{%     set ulogd__tpl_plugins = ulogd__dependent_plugins |
-        combine(ansible_local.ulogd.dependent_plugins)                        %}
+{% if ansible_local | d() and ansible_local.ulogd | d() and
+       ansible_local.ulogd.dependent_plugins | d()                            %}
+{%   if ulogd__dependent_plugins | d()                                        %}
+{%     set ulogd__tpl_plugins = ulogd__dependent_plugins
+        + ansible_local.ulogd.dependent_plugins | sort | unique               %}
 {%   else                                                                     %}
-{%     set ulogd__tpl_plugins = ansible_local.ulogd.dependent_plugins          %}
+{%     set ulogd__tpl_plugins = ansible_local.ulogd.dependent_plugins | sort  %}
 {%   endif                                                                    %}
 {% endif                                                                      %}
 
